@@ -54,7 +54,7 @@ while True:
     # compute the facial embeddings for each face bounding box
     encodings = face_recognition.face_encodings(rgb, boxes)
     names = []
-
+    name = "Unknown" 
     # loop over the facial embeddings
     for encoding in encodings:
         # attempt to match each face in the input image to our known
@@ -88,18 +88,20 @@ while True:
         print("[INFO] face recognized: " + name)
 
         # display the image to our screen
-        cv2.imwrite("/home/pi/face.jpg", frame)
-        try:
-            timing = send_timings[name]
-        except KeyError:
-            send_timings[name] = time.time()
-            send_file.run("/home/pi/face.jpg", name)
-            continue
-        if (time.time() - timing) > send_interval:
-            send_timings[name] = time.time()
-            send_file.run("/home/pi/face.jpg", name)
-        key = cv2.waitKey(1) & 0xFF
+        if (name is not "Unknown"):
 
+            cv2.imwrite("/home/pi/face.jpg", frame)
+            try:
+                timing = send_timings[name]
+            except KeyError:
+                send_timings[name] = time.time()
+                send_file.run("/home/pi/face.jpg", name)
+                continue
+            if (time.time() - timing) > send_interval:
+                send_timings[name] = time.time()
+                send_file.run("/home/pi/face.jpg", name)
+
+        key = cv2.waitKey(1) & 0xFF
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):
             break
