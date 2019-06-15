@@ -130,7 +130,6 @@ def cmd_inline_back(msg):
 @bot.callback_query_handler(func=lambda message: message.data == "cancel")
 def cmd_cancel(msg):
     state = sw.get_current_state(msg.message.chat.id)
-    print("CANCELLLL " + state)
     if state == sw.SEND_NAME:
         m = bot.edit_message_text(chat_id=msg.message.chat.id, 
         	                      message_id=msg.message.message_id, 
