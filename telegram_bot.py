@@ -52,7 +52,7 @@ def cmd_face_mng(msg):
 
 @bot.message_handler(func=lambda message: message.text == response_storage.camera_toggle_on)
 def cmd_camera_toggle_on(msg): 
-    os.system("python3 /home/pi/smart-camera/recognition.py &") 
+    os.system("python3 /home/pi/smartcamera/recognition.py &") 
     bot.send_message(msg.chat.id,
             utils.change_text_markdown(response_storage.camera_turned_on, "italic"), 
     	         parse_mode="Markdown", reply_markup=utils.make_keyboard("main"))
