@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import telebot
+import gpio
 import config
 from imutils import paths
 import detect_face
@@ -59,6 +60,7 @@ def cmd_camera_toggle_on(msg):
 
 @bot.message_handler(func=lambda message: message.text == response_storage.camera_toggle_off) 
 def cmd_camera_toggle_off(msg):
+    gpio.disable()
     pids = pgrep.pgrep("-f recognition")
     for pid in pids:
         os.kill(int(pid), signal.SIGKILL)
