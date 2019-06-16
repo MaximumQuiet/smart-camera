@@ -9,6 +9,7 @@ import cv2
 import config
 import numpy as np
 import send_file
+import gpio
 
 send_timings = {}
 send_interval = 360
@@ -16,6 +17,7 @@ send_interval = 360
 # load the known faces and embeddings along with OpenCV"s Haar
 # cascade for face detection
 print("[INFO] loading encodings + face detector...")
+gpio.init()
 try:
     data = pickle.loads(open(config.ENCODINGS_PATH, "rb").read())
     knownEncodings = data["encodings"]
@@ -99,7 +101,10 @@ while True:
                 continue
             if (time.time() - timing) > send_interval:
                 send_timings[name] = time.time()
+                gpio.disable()
                 send_file.run("/home/pi/face.jpg", name)
+                time.sleep(5)
+                gpio.enable()
 
         key = cv2.waitKey(1) & 0xFF
         # if the `q` key was pressed, break from the loop
